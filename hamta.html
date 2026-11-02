@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kopiera appen</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #9f1d32;
+      color: #fff;
+      font-family: "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+    h1 { margin: 0 0 12px; font-size: 40px; }
+    p { font-size: 18px; line-height: 1.45; }
+    button {
+      width: 100%;
+      height: 88px;
+      margin: 20px 0;
+      border: 0;
+      border-radius: 14px;
+      background: #fff;
+      color: #9f1d32;
+      font: 700 28px/1.2 "Segoe UI", sans-serif;
+      cursor: pointer;
+    }
+    textarea {
+      width: 100%;
+      height: 180px;
+      box-sizing: border-box;
+      font: 14px/1.4 Consolas, monospace;
+    }
+    a { color: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Kopiera appen</h1>
+    <p>Knappen nedan kopierar appen. Klistra in texten i Anteckningar och spara den som NewsCosmic.vbs. Filtyp: Alla filer. Kodning: ANSI.</p>
+    <button type="button" id="kopiera">Kopiera appen</button>
+    <p id="status"></p>
+    <p><a href="index.html">Tillbaka till NEWS</a></p>
+  </main>
+  <script>
+    var button = document.getElementById("kopiera");
+    var status = document.getElementById("status");
+
+    function showBox(text) {
+      var area = document.createElement("textarea");
+      area.readOnly = true;
+      area.value = text;
+      status.insertAdjacentElement("afterend", area);
+      area.focus();
+      area.select();
+    }
+
+    button.addEventListener("click", function () {
+      button.disabled = true;
+      fetch("NewsCosmic.vbs").then(function (response) {
+        if (!response.ok) throw new Error("missing");
+        return response.text();
+      }).then(function (text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text).then(function () {
+            status.textContent = "Appen är kopierad. Öppna Anteckningar och klistra in med Ctrl+V.";
+          }).catch(function () {
+            status.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
+            showBox(text);
+          });
+        }
+        status.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
+        showBox(text);
+      }).catch(function () {
+        status.textContent = "Appen kunde inte hämtas. Ladda om sidan och försök igen.";
+      }).then(function () {
+        button.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
