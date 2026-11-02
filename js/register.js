@@ -252,6 +252,56 @@
     statusBox.appendChild(link);
   }
 
+  function showInstallStatus(failed, text) {
+    statusBox.innerHTML = "";
+    statusBox.hidden = false;
+    statusBox.classList.toggle("error", !!failed);
+    var lead = document.createElement("p");
+    lead.className = "lead";
+    lead.textContent = failed ? "Texten nedan är markerad. Tryck Ctrl+C." : "Appen är kopierad.";
+    var steps = [
+      "Öppna Anteckningar och klistra in med Ctrl+V.",
+      "Välj Spara som. Filnamn: NewsCosmic.vbs. Filtyp: Alla filer. Kodning: ANSI.",
+      "Spara på skrivbordet och dubbelklicka filen en gång. Klicka OK.",
+      "Gå tillbaka hit och klicka Fyll i Cosmic."
+    ];
+    statusBox.appendChild(lead);
+    steps.forEach(function (line) {
+      var p = document.createElement("p");
+      p.textContent = line;
+      statusBox.appendChild(p);
+    });
+    if (failed && text) {
+      var area = document.createElement("textarea");
+      area.className = "raw";
+      area.readOnly = true;
+      area.value = text;
+      statusBox.appendChild(area);
+      area.focus();
+      area.select();
+    }
+  }
+
+  function copyApp() {
+    var button = document.getElementById("install");
+    fetch("NewsCosmic.vbs").then(function (response) {
+      if (!response.ok) throw new Error("missing");
+      return response.text();
+    }).then(function (text) {
+      return copyText(text).then(function () {
+        showInstallStatus(false);
+        button.textContent = "Appen är kopierad";
+        window.setTimeout(function () {
+          button.textContent = "Kopiera appen";
+        }, 1600);
+      }, function () {
+        showInstallStatus(true, text);
+      });
+    }).catch(function () {
+      showInstallStatus(true, "");
+    });
+  }
+
   function launchApp() {
     var values = readValues();
     if (!M.hasAnyValue(values)) return;
@@ -273,7 +323,7 @@
     var how = document.createElement("p");
     how.textContent = "Välj Öppna om Edge frågar. Klicka OK i appen. Du har sedan 5 sekunder på dig att klicka i rutan Andningsfrekvens i Cosmic. Rör inte musen eller tangentbordet efter det.";
     var missing = document.createElement("p");
-    missing.textContent = "Om inget händer: ladda ner appen, kör den en gång, och klicka Fyll i Cosmic igen.";
+    missing.textContent = "Om inget händer: klicka Kopiera appen, klistra in texten i Anteckningar, spara den som NewsCosmic.vbs och dubbelklicka den en gång.";
     statusBox.appendChild(lead);
     statusBox.appendChild(how);
     statusBox.appendChild(missing);
@@ -380,6 +430,7 @@
   document.getElementById("entry").addEventListener("change", render);
   copyButton.addEventListener("click", copy);
   fillButton.addEventListener("click", launchApp);
+  document.getElementById("install").addEventListener("click", copyApp);
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
