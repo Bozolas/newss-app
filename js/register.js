@@ -288,17 +288,18 @@
   }
 
   function copyApp() {
-    var button = document.getElementById("install");
+    var buttons = document.querySelectorAll(".js-install");
+    function label(text) {
+      buttons.forEach(function (button) { button.textContent = text; });
+    }
     fetch("NewsCosmic.vbs").then(function (response) {
       if (!response.ok) throw new Error("missing");
       return response.text();
     }).then(function (text) {
       return copyText(text).then(function () {
         showInstallStatus(false);
-        button.textContent = "Appen är kopierad";
-        window.setTimeout(function () {
-          button.textContent = "Kopiera appen";
-        }, 1600);
+        label("Appen är kopierad");
+        window.setTimeout(function () { label("Kopiera appen"); }, 1600);
       }, function () {
         showInstallStatus(true, text);
       });
@@ -513,7 +514,9 @@
   copyButton.addEventListener("click", copy);
   fillButton.addEventListener("click", nextValue);
   launchButton.addEventListener("click", launchApp);
-  document.getElementById("install").addEventListener("click", copyApp);
+  document.querySelectorAll(".js-install").forEach(function (button) {
+    button.addEventListener("click", copyApp);
+  });
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);

@@ -41,11 +41,14 @@ body.cosmic {
 button, input, select { font: inherit; color: inherit; }
 
 .top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   background: #fff;
   border-bottom: 1px solid var(--line);
 }
 
-.top-inner, main {
+.top-inner, .top-action, main {
   width: min(720px, calc(100% - 32px));
   margin: 0 auto;
 }
@@ -305,6 +308,8 @@ input:focus, select:focus, button:focus-visible {
 .tabs { color: var(--navy); font-variant-numeric: tabular-nums; font-weight: 700; }
 .flow-note { color: var(--muted); }
 
+.top-action { padding-bottom: 12px; }
+.top-action .primary { height: 48px; }
 .install { margin: 4px 0 12px; }
 .copy-bar .help a { color: var(--navy); font-weight: 700; }
 .copy-bar .text { display: block; margin-top: 10px; }
@@ -448,7 +453,7 @@ aside .result { margin-bottom: 0; }
 @media (max-width: 560px) {
   .bp { grid-template-columns: 1fr; }
   .slash { display: none; }
-  .top-inner, main, .wide { width: min(720px, calc(100% - 20px)); }
+  .top-inner, .top-action, main, .wide { width: min(720px, calc(100% - 20px)); }
   nav a { padding: 8px 10px; }
   .sheet-head, .cosmic-head { flex-direction: column; align-items: flex-start; }
   .sheet-actions { flex-wrap: wrap; }
