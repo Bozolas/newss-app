@@ -48,40 +48,42 @@
     <p><a href="index.html">Tillbaka till NEWS</a></p>
   </main>
   <script>
-    var button = document.getElementById("kopiera");
-    var status = document.getElementById("status");
+    (function () {
+      var copyButton = document.getElementById("kopiera");
+      var message = document.getElementById("status");
 
-    function showBox(text) {
-      var area = document.createElement("textarea");
-      area.readOnly = true;
-      area.value = text;
-      status.insertAdjacentElement("afterend", area);
-      area.focus();
-      area.select();
-    }
+      function showBox(text) {
+        var area = document.createElement("textarea");
+        area.readOnly = true;
+        area.value = text;
+        message.insertAdjacentElement("afterend", area);
+        area.focus();
+        area.select();
+      }
 
-    button.addEventListener("click", function () {
-      button.disabled = true;
-      fetch("NewsCosmic.vbs").then(function (response) {
-        if (!response.ok) throw new Error("missing");
-        return response.text();
-      }).then(function (text) {
-        if (navigator.clipboard && window.isSecureContext) {
-          return navigator.clipboard.writeText(text).then(function () {
-            status.textContent = "Appen är kopierad. Öppna Anteckningar och klistra in med Ctrl+V.";
-          }).catch(function () {
-            status.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
-            showBox(text);
-          });
-        }
-        status.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
-        showBox(text);
-      }).catch(function () {
-        status.textContent = "Appen kunde inte hämtas. Ladda om sidan och försök igen.";
-      }).then(function () {
-        button.disabled = false;
+      copyButton.addEventListener("click", function () {
+        copyButton.disabled = true;
+        fetch("NewsCosmic.vbs").then(function (response) {
+          if (!response.ok) throw new Error("missing");
+          return response.text();
+        }).then(function (text) {
+          if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text).then(function () {
+              message.textContent = "Appen är kopierad. Öppna Anteckningar och klistra in med Ctrl+V.";
+            }).catch(function () {
+              message.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
+              showBox(text);
+            });
+          }
+          message.textContent = "Texten nedan är markerad. Tryck Ctrl+C.";
+          showBox(text);
+        }).catch(function () {
+          message.textContent = "Appen kunde inte hämtas. Ladda om sidan och försök igen.";
+        }).then(function () {
+          copyButton.disabled = false;
+        });
       });
-    });
+    })();
   </script>
 </body>
 </html>
