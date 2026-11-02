@@ -21,7 +21,9 @@
   </header>
 
   <main>
-    <p class="intro">Skriv in värdena. Klicka i rutan <strong>Andningsfrekvens</strong> i Cosmic. Kopiera ett värde i taget här, klistra in det och tryck TAB så många gånger som sidan säger. Kontrollera alltid innan du sparar.</p>
+    <p class="intro">Skriv in värdena. Kopiera appen till Anteckningar en gång och spara den som en textfil. Sedan kan <strong>Fyll i Cosmic</strong> skriva in värdena. På en dator som blockerar filen använder du <strong>Kopiera nästa värde</strong>.</p>
+    <button type="button" class="primary install" id="install">Kopiera appen</button>
+    <p class="help">Öppna Anteckningar och klistra in. Spara som NewsCosmic.vbs. Filtyp: Alla filer. Kodning: ANSI. Dubbelklicka filen en gång.</p>
 
     <ol class="steps">
       <li>Skriv in värdena</li>
@@ -129,8 +131,9 @@
       </details>
 
       <div class="copy-bar">
-        <button type="button" class="primary" id="fill" disabled>Kopiera nästa värde</button>
-        <p class="help">Klicka först i Andningsfrekvens i Cosmic. Ctrl+Enter kopierar nästa värde.</p>
+        <button type="button" class="primary" id="launch" disabled>Fyll i Cosmic</button>
+        <p class="help">Appen måste vara sparad och körd en gång. Klicka i Andningsfrekvens i Cosmic efter att du klickat OK.</p>
+        <button type="button" class="text" id="fill" disabled>Kopiera nästa värde</button>
         <button type="button" class="text" id="copy" disabled>Kopiera för testsidan</button>
       </div>
 

@@ -22,6 +22,7 @@
   var statusBox = document.getElementById("status");
   var copyButton = document.getElementById("copy");
   var fillButton = document.getElementById("fill");
+  var launchButton = document.getElementById("launch");
   var warnBox = document.getElementById("warnings");
 
   function readValues() {
@@ -173,6 +174,7 @@
     var ready = M.hasAnyValue(values);
     copyButton.disabled = !ready;
     fillButton.disabled = !ready;
+    launchButton.disabled = !ready;
     stepIndex = 0;
   }
 
@@ -510,6 +512,8 @@
   document.getElementById("entry").addEventListener("change", render);
   copyButton.addEventListener("click", copy);
   fillButton.addEventListener("click", nextValue);
+  launchButton.addEventListener("click", launchApp);
+  document.getElementById("install").addEventListener("click", copyApp);
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
