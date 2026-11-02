@@ -329,6 +329,32 @@
     });
   }
 
+  function randomInt(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
+  function fillRandom() {
+    var sys = randomInt(90, 180);
+    var tempTenths = randomInt(350, 395);
+    var levels = ["Alert", "Confusion", "Voice", "Pain", "Unresponsive"];
+    fields.af.value = String(randomInt(6, 36));
+    fields.sat.value = String(randomInt(88, 100));
+    fields.sys.value = String(sys);
+    fields.dia.value = String(randomInt(50, Math.min(110, sys - 10)));
+    fields.puls.value = String(randomInt(40, 140));
+    fields.acvpu.value = levels[randomInt(0, levels.length - 1)];
+    fields.temp.value = Math.floor(tempTenths / 10) + "," + (tempTenths % 10);
+    fields.habituell.checked = Math.random() < 0.2;
+    fields.oregelbunden.checked = Math.random() < 0.2;
+    var onOxygen = Math.random() < 0.35;
+    setSyrgas(onOxygen ? "ja" : "nej");
+    if (onOxygen) {
+      fields.flow.value = String(randomInt(1, 15));
+      render();
+    }
+    statusBox.hidden = true;
+  }
+
   function fillExample() {
     fields.af.value = "12";
     fields.sat.value = "96";
@@ -366,6 +392,7 @@
   copyButton.addEventListener("click", copy);
   fillButton.addEventListener("click", fillCosmic);
   document.getElementById("example").addEventListener("click", fillExample);
+  document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
