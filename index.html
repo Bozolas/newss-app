@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEWS till Cosmic</title>
+  <meta name="description" content="Skriv in NEWS-värden och kopiera dem till Cosmic. Värdena fördelas i rätt rutor.">
+  <meta name="theme-color" content="#1b3f5c">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="paper">
+  <header class="top">
+    <div class="top-inner">
+      <a class="mark" href="index.html">NEWS<span>till Cosmic</span></a>
+      <nav>
+        <a href="index.html" aria-current="page">Registrera</a>
+        <a href="cosmic.html">Testa Cosmic</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <p class="intro">Skriv in NEWS-värdena. Kopiera dem med en knapp och klistra in i rutan <strong>Andningsfrekvens</strong> i Cosmic. Värdena fördelas då i rätt rutor. Kontrollera alltid innan du sparar.</p>
+
+    <ol class="steps">
+      <li>Skriv in värdena</li>
+      <li>Kopiera</li>
+      <li>Klistra in i Cosmic</li>
+      <li>Kontrollera och spara</li>
+    </ol>
+
+    <form id="entry" class="sheet" autocomplete="off">
+      <div class="sheet-head">
+        <h1>NEWS</h1>
+        <div class="sheet-actions">
+          <button type="button" class="text" id="example">Fyll exempel</button>
+          <button type="button" class="text" id="clear">Töm</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="af"><b>AF</b> Andningsfrekvens</label>
+        <div class="control">
+          <input id="af" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false">
+          <span>/min</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="sat"><b>SAT</b> Saturation</label>
+        <div class="control">
+          <input id="sat" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false">
+          <span>%</span>
+        </div>
+        <label class="tick"><input id="habituell" type="checkbox"> Låg habituell syremättnad <em>kryssas i Cosmic</em></label>
+      </div>
+
+      <div class="field">
+        <span class="label" id="o2-label"><b>O2</b> Tillsatt syrgas</span>
+        <div class="segment" role="radiogroup" aria-labelledby="o2-label">
+          <button type="button" data-syrgas="nej" aria-pressed="true">Nej, luft</button>
+          <button type="button" data-syrgas="ja" aria-pressed="false">Ja, syrgas</button>
+        </div>
+        <p class="help">Ja och Nej klistras inte in. Du får en påminnelse om du valt syrgas.</p>
+        <div class="control" id="flow-row" hidden>
+          <label class="sr" for="flow">Flödeshastighet</label>
+          <input id="flow" inputmode="decimal" maxlength="5" autocomplete="off" spellcheck="false" placeholder="Flöde">
+          <span>l/min</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label"><b>BT</b> Blodtryck</span>
+        <div class="bp">
+          <label class="sub" for="sys">Systoliskt
+            <input id="sys" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false">
+          </label>
+          <span class="slash" aria-hidden="true">/</span>
+          <label class="sub" for="dia">Diastoliskt
+            <input id="dia" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false">
+          </label>
+          <span class="unit">mmHg</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="puls"><b>P</b> Puls</label>
+        <div class="control">
+          <input id="puls" inputmode="numeric" maxlength="3" autocomplete="off" spellcheck="false">
+          <span>/min</span>
+        </div>
+        <label class="tick"><input id="oregelbunden" type="checkbox"> Oregelbunden <em>kryssas i Cosmic</em></label>
+      </div>
+
+      <div class="field">
+        <label for="acvpu"><b>ACVPU</b></label>
+        <select id="acvpu">
+          <option value="">Välj</option>
+          <option value="Alert">Alert — vaken</option>
+          <option value="Confusion">Confusion — nytillkommen förvirring</option>
+          <option value="Voice">Voice — reagerar på tilltal</option>
+          <option value="Pain">Pain — reagerar på smärta</option>
+          <option value="Unresponsive">Unresponsive — reagerar inte</option>
+        </select>
+        <p class="help">Ordet som klistras in är Alert, Confusion, Voice, Pain eller Unresponsive, samma ord som Cosmic visar.</p>
+      </div>
+
+      <div class="field">
+        <label for="temp"><b>TEMP</b> Temperatur</label>
+        <div class="control">
+          <input id="temp" inputmode="decimal" maxlength="5" autocomplete="off" spellcheck="false" placeholder="36,4">
+          <span>°C</span>
+        </div>
+      </div>
+
+      <section class="news" aria-live="polite">
+        <h2>NEWS-räkning</h2>
+        <div id="score" class="score"></div>
+        <p id="score-note" class="help"></p>
+      </section>
+
+      <div id="warnings" class="warnings" hidden></div>
+
+      <details class="tabs-view">
+        <summary>Visa hur värdena fördelas med tabbar</summary>
+        <div id="preview"></div>
+      </details>
+
+      <div class="copy-bar">
+        <button type="button" class="primary" id="copy" disabled>Kopiera värden</button>
+        <p class="help">Ctrl+Enter kopierar också. Inget sparas på någon server.</p>
+      </div>
+
+      <div id="status" class="status" hidden aria-live="polite"></div>
+    </form>
+  </main>
+  <footer class="site-foot">newss.se · Värdena sparas inte på servern</footer>
+
+  <script src="js/model.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

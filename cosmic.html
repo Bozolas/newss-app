@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testa Cosmic – NEWS</title>
+  <meta name="description" content="Testa att NEWS-värdena hamnar i rätt rutor innan du klistrar in dem i Cosmic.">
+  <meta name="theme-color" content="#0d5f8a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="cosmic">
+  <header class="top">
+    <div class="top-inner">
+      <a class="mark" href="index.html">NEWS<span>till Cosmic</span></a>
+      <nav>
+        <a href="index.html">Registrera</a>
+        <a href="cosmic.html" aria-current="page">Testa Cosmic</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wide">
+    <div class="layout">
+      <section>
+        <p class="intro">Det här är en kopia av Cosmics tabbordning. Klicka i <strong>Andningsfrekvens</strong> och tryck Ctrl+V. De streckade rutorna är tabbstopp som ska förbli tomma.</p>
+        <p id="hud" class="hud">Klicka i Andningsfrekvens.</p>
+        <div id="waiting" class="waiting"></div>
+        <div class="cosmic-card">
+          <div class="cosmic-head">
+            <h1>NEWS2</h1>
+            <div class="sheet-actions">
+              <button type="button" class="text" id="paste-stored">Klistra in kopierade värden</button>
+              <button type="button" class="text" id="reset">Nollställ</button>
+            </div>
+          </div>
+          <div id="cosmic-fields"></div>
+        </div>
+      </section>
+      <aside>
+        <div id="result" class="result" hidden></div>
+        <div class="note">
+          <h2>Så är tabbarna räknade</h2>
+          <ul>
+            <li>Andningsfrekvens, sedan 2 tabbar till saturation</li>
+            <li>Saturation, sedan 5 tabbar till systoliskt</li>
+            <li>Systoliskt, sedan 1 tabb till diastoliskt</li>
+            <li>Diastoliskt, sedan 3 tabbar till puls</li>
+            <li>Puls, sedan 3 tabbar till ACVPU</li>
+            <li>ACVPU, sedan 2 tabbar till temperatur</li>
+          </ul>
+          <p>Prova samma inklistring i riktiga Cosmic innan värdena används i vården. Kryssrutor och Ja/Nej fylls inte av inklistringen.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-foot">newss.se · Värdena sparas inte på servern</footer>
+
+  <script src="js/model.js"></script>
+  <script src="js/cosmic.js"></script>
+</body>
+</html>
