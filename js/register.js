@@ -21,7 +21,6 @@
   var preview = document.getElementById("preview");
   var statusBox = document.getElementById("status");
   var copyButton = document.getElementById("copy");
-  var fillButton = document.getElementById("fill");
   var warnBox = document.getElementById("warnings");
 
   function readValues() {
@@ -170,7 +169,6 @@
     renderWarnings(values);
     var ready = M.hasAnyValue(values);
     copyButton.disabled = !ready;
-    fillButton.disabled = !ready;
   }
 
   function fallbackCopy(text) {
@@ -219,7 +217,7 @@
     if (failed) {
       var err = document.createElement("p");
       err.className = "lead";
-      err.textContent = "Webbläsaren släppte inte urklippet. Texten nedan är markerad. Tryck Ctrl+C och klistra in den på testsidan, i rutan Andningsfrekvens.";
+      err.textContent = "Webbläsaren släppte inte urklippet. Texten nedan är markerad. Tryck Ctrl+C och klistra in den i rutan Andningsfrekvens i Cosmic.";
       var area = document.createElement("textarea");
       area.className = "raw";
       area.readOnly = true;
@@ -238,7 +236,7 @@
     lead.className = "lead";
     lead.textContent = "Värdena är kopierade.";
     var how = document.createElement("p");
-    how.textContent = "På testsidan: klicka i rutan Andningsfrekvens och tryck Ctrl+V. I riktiga Cosmic använder du Fyll i Cosmic i stället.";
+    how.textContent = "I Cosmic: klicka i rutan Andningsfrekvens och tryck Ctrl+V. Kontrollera alla rutor innan du sparar.";
     statusBox.appendChild(lead);
     statusBox.appendChild(how);
     M.reminders(values).forEach(function (line) {
@@ -250,49 +248,6 @@
     link.href = "cosmic.html";
     link.textContent = "Testa inklistringen";
     statusBox.appendChild(link);
-  }
-
-  function showFillStatus(values) {
-    statusBox.innerHTML = "";
-    statusBox.hidden = false;
-    statusBox.classList.remove("error");
-    var lead = document.createElement("p");
-    lead.className = "lead";
-    lead.textContent = "Filen fyll-cosmic.vbs är hämtad.";
-    var how = document.createElement("p");
-    how.textContent = "Dubbelklicka filen och klicka OK. Du har sedan 5 sekunder på dig att klicka i rutan Andningsfrekvens i Cosmic. Rör inte musen eller tangentbordet efter det. Kontrollera värdena innan du sparar.";
-    statusBox.appendChild(lead);
-    statusBox.appendChild(how);
-    var keep = document.createElement("p");
-    keep.textContent = "Om webbläsaren varnar för filen: välj Behåll.";
-    statusBox.appendChild(keep);
-    M.reminders(values).forEach(function (line) {
-      var p = document.createElement("p");
-      p.textContent = line;
-      statusBox.appendChild(p);
-    });
-  }
-
-  function fillCosmic() {
-    var values = readValues();
-    if (!M.hasAnyValue(values)) return;
-    var script = M.buildCosmicScript(values);
-    var blob = new Blob([M.encodeWindows1252(script)], { type: "application/octet-stream" });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement("a");
-    link.href = url;
-    link.download = "fyll-cosmic.vbs";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.setTimeout(function () {
-      URL.revokeObjectURL(url);
-    }, 1500);
-    showFillStatus(values);
-    fillButton.textContent = "Filen är hämtad";
-    window.setTimeout(function () {
-      fillButton.textContent = "Fyll i Cosmic";
-    }, 1600);
   }
 
   function copy() {
@@ -322,7 +277,7 @@
       showStatus(values, false, text);
       copyButton.textContent = "Kopierat";
       window.setTimeout(function () {
-        copyButton.textContent = "Kopiera för testsidan";
+        copyButton.textContent = "Kopiera värden";
       }, 1600);
     }).catch(function () {
       showStatus(values, true, text);
@@ -390,14 +345,13 @@
   document.getElementById("entry").addEventListener("input", render);
   document.getElementById("entry").addEventListener("change", render);
   copyButton.addEventListener("click", copy);
-  fillButton.addEventListener("click", fillCosmic);
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       event.preventDefault();
-      fillCosmic();
+      copy();
     }
   });
 
@@ -408,7 +362,7 @@
       event.preventDefault();
       var next = fields[order[index + 1]];
       if (next) next.focus();
-      else fillCosmic();
+      else copy();
     });
   });
 

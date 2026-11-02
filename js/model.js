@@ -85,52 +85,6 @@
     }).join("\t");
   }
 
-  function sendKeysText(text) {
-    return String(text).replace(/[+^%~(){}[\]]/g, "{$&}");
-  }
-
-  function vbsQuoted(text) {
-    return '"' + String(text).replace(/"/g, '""') + '"';
-  }
-
-  function buildCosmicScript(values) {
-    var parts = buildPaste(values).split("\t");
-    var lines = [
-      "' Skriver in NEWS-värden i Cosmic och trycker TAB mellan fälten.",
-      "Set shell = CreateObject(\"WScript.Shell\")",
-      "result = MsgBox(\"1. Klicka i rutan Andningsfrekvens i Cosmic.\" & vbCrLf & \"2. Klicka OK här.\" & vbCrLf & \"3. Rör inte musen eller tangentbordet. Inmatningen startar efter 5 sekunder.\", vbOKCancel, \"Fyll i Cosmic\")",
-      "If result <> vbOK Then WScript.Quit",
-      "WScript.Sleep 5000"
-    ];
-    parts.forEach(function (part, index) {
-      if (part) {
-        Array.from(part).forEach(function (character) {
-          lines.push("shell.SendKeys " + vbsQuoted(sendKeysText(character)));
-          lines.push("WScript.Sleep 40");
-        });
-        if (/^(Alert|Confusion|Voice|Pain|Unresponsive)$/.test(part)) {
-          lines.push("WScript.Sleep 250");
-        }
-      }
-      if (index < parts.length - 1) {
-        lines.push("shell.SendKeys \"{TAB}\"");
-        lines.push("WScript.Sleep 120");
-      }
-    });
-    lines.push("MsgBox \"Klart. Kontrollera värdena i Cosmic innan du sparar.\", vbInformation, \"Fyll i Cosmic\"");
-    return lines.join("\r\n") + "\r\n";
-  }
-
-  function encodeWindows1252(text) {
-    var bytes = [];
-    for (var i = 0; i < text.length; i++) {
-      var code = text.charCodeAt(i);
-      if (code <= 255) bytes.push(code);
-      else bytes.push(63);
-    }
-    return new Uint8Array(bytes);
-  }
-
   function tabsBetween(fromId, toId) {
     return indexOf(toId) - indexOf(fromId);
   }
@@ -244,8 +198,6 @@
     toNumber: toNumber,
     formatStop: formatStop,
     buildPaste: buildPaste,
-    buildCosmicScript: buildCosmicScript,
-    encodeWindows1252: encodeWindows1252,
     tabsBetween: tabsBetween,
     chainSteps: chainSteps,
     scoreNews: scoreNews,

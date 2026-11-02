@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NEWS till Cosmic</title>
-  <meta name="description" content="Skriv in NEWS-värden och fyll i dem i Cosmic med riktiga TAB-tryck.">
+  <meta name="description" content="Skriv in NEWS-värden, kopiera dem och klistra in dem i Cosmic.">
   <meta name="theme-color" content="#1b3f5c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
@@ -21,12 +21,12 @@
   </header>
 
   <main>
-    <p class="intro">Skriv in NEWS-värdena och hämta ifyllningen. Filen skriver in värdena i Cosmic och trycker TAB mellan rutorna. Kontrollera alltid innan du sparar.</p>
+    <p class="intro">Skriv in NEWS-värdena. Kopiera dem och klistra in i rutan <strong>Andningsfrekvens</strong> i Cosmic. Kontrollera alltid innan du sparar.</p>
 
     <ol class="steps">
       <li>Skriv in värdena</li>
-      <li>Hämta ifyllningen</li>
-      <li>Kör filen mot Cosmic</li>
+      <li>Kopiera</li>
+      <li>Klistra in i Cosmic</li>
       <li>Kontrollera och spara</li>
     </ol>
 
@@ -129,9 +129,8 @@
       </details>
 
       <div class="copy-bar">
-        <button type="button" class="primary" id="fill" disabled>Fyll i Cosmic</button>
-        <button type="button" class="text" id="copy" disabled>Kopiera för testsidan</button>
-        <p class="help">Inget sparas på någon server. Ctrl+Enter hämtar ifyllningen.</p>
+        <button type="button" class="primary" id="copy" disabled>Kopiera värden</button>
+        <p class="help">Ctrl+Enter kopierar också. Inget sparas på någon server.</p>
       </div>
 
       <div id="status" class="status" hidden aria-live="polite"></div>
