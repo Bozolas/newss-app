@@ -21,6 +21,7 @@
   var preview = document.getElementById("preview");
   var statusBox = document.getElementById("status");
   var copyButton = document.getElementById("copy");
+  var fillButton = document.getElementById("fill");
   var warnBox = document.getElementById("warnings");
 
   function readValues() {
@@ -169,6 +170,7 @@
     renderWarnings(values);
     var ready = M.hasAnyValue(values);
     copyButton.disabled = !ready;
+    fillButton.disabled = !ready;
   }
 
   function fallbackCopy(text) {
@@ -236,7 +238,7 @@
     lead.className = "lead";
     lead.textContent = "Värdena är kopierade.";
     var how = document.createElement("p");
-    how.textContent = "I Cosmic: klicka i rutan Andningsfrekvens och tryck Ctrl+V. Kontrollera alla rutor innan du sparar.";
+    how.textContent = "På testsidan: klicka i rutan Andningsfrekvens och tryck Ctrl+V. I Cosmic använder du Fyll i Cosmic.";
     statusBox.appendChild(lead);
     statusBox.appendChild(how);
     M.reminders(values).forEach(function (line) {
@@ -248,6 +250,38 @@
     link.href = "cosmic.html";
     link.textContent = "Testa inklistringen";
     statusBox.appendChild(link);
+  }
+
+  function launchApp() {
+    var values = readValues();
+    if (!M.hasAnyValue(values)) return;
+    var link = document.createElement("a");
+    link.href = "newss://fill/" + encodeURIComponent(M.buildPaste(values));
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showAppStatus(values);
+  }
+
+  function showAppStatus(values) {
+    statusBox.innerHTML = "";
+    statusBox.hidden = false;
+    statusBox.classList.remove("error");
+    var lead = document.createElement("p");
+    lead.className = "lead";
+    lead.textContent = "Appen öppnas.";
+    var how = document.createElement("p");
+    how.textContent = "Välj Öppna om Edge frågar. Klicka OK i appen. Du har sedan 5 sekunder på dig att klicka i rutan Andningsfrekvens i Cosmic. Rör inte musen eller tangentbordet efter det.";
+    var missing = document.createElement("p");
+    missing.textContent = "Om inget händer: ladda ner appen, kör den en gång, och klicka Fyll i Cosmic igen.";
+    statusBox.appendChild(lead);
+    statusBox.appendChild(how);
+    statusBox.appendChild(missing);
+    M.reminders(values).forEach(function (line) {
+      var p = document.createElement("p");
+      p.textContent = line;
+      statusBox.appendChild(p);
+    });
   }
 
   function copy() {
@@ -277,7 +311,7 @@
       showStatus(values, false, text);
       copyButton.textContent = "Kopierat";
       window.setTimeout(function () {
-        copyButton.textContent = "Kopiera värden";
+        copyButton.textContent = "Kopiera för testsidan";
       }, 1600);
     }).catch(function () {
       showStatus(values, true, text);
@@ -345,13 +379,14 @@
   document.getElementById("entry").addEventListener("input", render);
   document.getElementById("entry").addEventListener("change", render);
   copyButton.addEventListener("click", copy);
+  fillButton.addEventListener("click", launchApp);
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       event.preventDefault();
-      copy();
+      launchApp();
     }
   });
 
@@ -362,7 +397,7 @@
       event.preventDefault();
       var next = fields[order[index + 1]];
       if (next) next.focus();
-      else copy();
+      else launchApp();
     });
   });
 

@@ -306,6 +306,9 @@ input:focus, select:focus, button:focus-visible {
 .flow-note { color: var(--muted); }
 
 .copy-bar { margin-top: 18px; }
+.copy-bar .help a { color: var(--navy); font-weight: 700; }
+.copy-bar .text { display: block; margin-top: 10px; }
+.copy-bar .text:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .primary {
   width: 100%;
