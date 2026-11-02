@@ -316,6 +316,9 @@ input:focus, select:focus, button:focus-visible {
 .copy-bar .text:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 56px;
   border: 0;
@@ -324,6 +327,7 @@ input:focus, select:focus, button:focus-visible {
   color: #fff;
   font-size: 18px;
   font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
 }
 

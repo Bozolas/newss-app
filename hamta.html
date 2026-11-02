@@ -19,7 +19,11 @@
     }
     h1 { margin: 0 0 12px; font-size: 40px; }
     p { font-size: 18px; line-height: 1.45; }
-    button {
+    button, a.load {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
       width: 100%;
       height: 88px;
       margin: 20px 0;
@@ -28,6 +32,7 @@
       background: #fff;
       color: #9f1d32;
       font: 700 28px/1.2 "Segoe UI", sans-serif;
+      text-decoration: none;
       cursor: pointer;
     }
     textarea {
@@ -41,7 +46,11 @@
 </head>
 <body>
   <main>
-    <h1>Kopiera appen</h1>
+    <h1>Ladda ner appen</h1>
+    <p>Spara filen och dubbelklicka NewsCosmic.exe en gång. Klicka OK. Sedan fyller knappen Fyll i Cosmic i värdena på newss.se.</p>
+    <a class="load" href="NewsCosmic.exe" download="NewsCosmic.exe">Ladda ner appen</a>
+    <p>Windows kan säga att appen inte är signerad. På jobbdatorn stoppades den av det. På den här datorn ser du om nedladdningen går att spara och starta.</p>
+    <h1>Eller kopiera texten</h1>
     <p>Knappen nedan kopierar appen. Klistra in texten i Anteckningar och spara den som NewsCosmic.vbs. Filtyp: Alla filer. Kodning: ANSI.</p>
     <button type="button" id="kopiera">Kopiera appen</button>
     <p id="status"></p>
