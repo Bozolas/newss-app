@@ -243,7 +243,7 @@
     lead.className = "lead";
     lead.textContent = "Värdena är kopierade.";
     var how = document.createElement("p");
-    how.textContent = "På testsidan: klicka i rutan Andningsfrekvens och tryck Ctrl+V. I Cosmic använder du Fyll i Cosmic.";
+    how.textContent = "På testsidan och i Cosmic hamnar hela den här texten i en enda ruta. Använd Kopiera nästa värde, klistra in och tryck TAB.";
     statusBox.appendChild(lead);
     statusBox.appendChild(how);
     M.reminders(values).forEach(function (line) {

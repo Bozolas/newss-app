@@ -382,6 +382,11 @@ input, select { min-width: 0; max-width: 100%; }
   font-weight: 650;
 }
 
+.hud.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
+
 .waiting ul, .note ul, .check { margin: 8px 0 0; padding-left: 18px; }
 .waiting li { margin: 2px 0; }
 

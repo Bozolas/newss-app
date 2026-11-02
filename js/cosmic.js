@@ -3,6 +3,7 @@
   var STORAGE_KEY = "news.cosmicPaste";
   var host = document.getElementById("cosmic-fields");
   var hud = document.getElementById("hud");
+  var cosmicWarn = document.getElementById("cosmic-warn");
   var result = document.getElementById("result");
   var waiting = document.getElementById("waiting");
   var elements = {};
@@ -178,28 +179,28 @@
     node.value = part;
   }
 
-  function distribute(text, start) {
-    var list = stops();
-    var startIndex = list.indexOf(start);
-    if (startIndex < 0) return;
-    var parts = String(text).replace(/\r?\n/g, "").split("\t");
-    parts.forEach(function (part, offset) {
-      var node = list[startIndex + offset];
-      if (node) applyPart(node, part);
-    });
-    var last = list[Math.min(startIndex + parts.length - 1, list.length - 1)];
-    if (last) {
-      last.focus();
-      updateHud(last);
-    }
-    compare();
+  function showBlockedPaste() {
+    cosmicWarn.hidden = false;
+    cosmicWarn.textContent = "Hela inklistringen hamnade i den markerade rutan. Cosmic gör likadant och hoppar inte till nästa fält. Kopiera ett värde i taget, klistra in och tryck TAB.";
   }
 
   function onPaste(event) {
     var text = event.clipboardData ? event.clipboardData.getData("text/plain") : "";
-    if (!text || text.indexOf("\t") === -1) return;
-    event.preventDefault();
-    distribute(text, event.target);
+    var target = event.target;
+    if (!text || !target) return;
+    if (text.indexOf("\t") !== -1) {
+      window.setTimeout(function () {
+        showBlockedPaste();
+        compare();
+      }, 0);
+      return;
+    }
+    if (target.tagName === "SELECT") {
+      event.preventDefault();
+      applyPart(target, text);
+      updateHud(target);
+      compare();
+    }
   }
 
   function loadPayload() {
@@ -223,7 +224,7 @@
     }
     waiting.hidden = false;
     var lead = document.createElement("p");
-    lead.textContent = "Kopierade värden väntar. Klicka i Andningsfrekvens och tryck Ctrl+V.";
+    lead.textContent = "Kopierade värden väntar. Klistra in ett värde i taget i den markerade rutan och tryck TAB. Alla värden på en gång hamnar i en enda ruta, precis som i Cosmic.";
     waiting.appendChild(lead);
     var list = document.createElement("ul");
     [
@@ -264,7 +265,7 @@
     result.appendChild(heading);
     if (!payload || !payload.values) {
       var note = document.createElement("p");
-      note.textContent = "Inklistringen är gjord. Det finns ingen sparad kopia att jämföra med. Kontrollera rutorna mot det du tänkte skriva in.";
+      note.textContent = "Det finns ingen sparad kopia att jämföra med. Kontrollera rutorna mot det du tänkte skriva in.";
       result.appendChild(note);
       return;
     }
@@ -351,37 +352,18 @@
     });
     result.hidden = true;
     result.innerHTML = "";
+    cosmicWarn.hidden = true;
     elements.af.focus();
     updateHud(elements.af);
   }
 
-  function pasteStored() {
-    var payload = loadPayload();
-    var text = "";
-    if (payload && payload.text) text = payload.text;
-    var start = function (value) {
-      elements.af.focus();
-      distribute(value, elements.af);
-    };
-    if (text) {
-      start(text);
-      return;
-    }
-    if (navigator.clipboard && navigator.clipboard.readText) {
-      navigator.clipboard.readText().then(function (clip) {
-        if (clip && clip.indexOf("\t") !== -1) start(clip);
-      }).catch(function () {
-        waiting.hidden = false;
-      });
-    }
-  }
-
   mount();
   host.addEventListener("paste", onPaste);
+  host.addEventListener("input", compare);
+  host.addEventListener("change", compare);
   host.addEventListener("focusin", function (event) {
     if (event.target && event.target.dataset && event.target.dataset.stop) updateHud(event.target);
   });
-  document.getElementById("paste-stored").addEventListener("click", pasteStored);
   document.getElementById("reset").addEventListener("click", resetForm);
   showWaiting();
   elements.af.focus();

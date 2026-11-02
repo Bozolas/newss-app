@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Testa Cosmic – NEWS</title>
-  <meta name="description" content="Testa att NEWS-värdena hamnar i rätt rutor innan du klistrar in dem i Cosmic.">
+  <meta name="description" content="Testa Cosmic så som programmet tar emot värden: ett värde i taget i den markerade rutan.">
   <meta name="theme-color" content="#0d5f8a">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=10">
 </head>
 <body class="cosmic">
   <header class="top">
@@ -23,14 +23,14 @@
   <main class="wide">
     <div class="layout">
       <section>
-        <p class="intro">Det här är en kopia av Cosmics tabbordning. Klicka i <strong>Andningsfrekvens</strong> och tryck Ctrl+V. De streckade rutorna är tabbstopp som ska förbli tomma.</p>
+        <p class="intro">Det här fungerar som Cosmic. En inklistring hamnar bara i rutan som är markerad. Cosmic hoppar inte vidare till nästa fält. Kopiera <strong>ett värde i taget</strong>, klistra in och tryck TAB. De streckade rutorna är tabbstopp som ska förbli tomma.</p>
         <p id="hud" class="hud">Klicka i Andningsfrekvens.</p>
+        <p id="cosmic-warn" class="hud warn" hidden></p>
         <div id="waiting" class="waiting"></div>
         <div class="cosmic-card">
           <div class="cosmic-head">
             <h1>NEWS2</h1>
             <div class="sheet-actions">
-              <button type="button" class="text" id="paste-stored">Klistra in kopierade värden</button>
               <button type="button" class="text" id="reset">Nollställ</button>
             </div>
           </div>
@@ -49,14 +49,14 @@
             <li>Puls, sedan 3 tabbar till ACVPU</li>
             <li>ACVPU, sedan 2 tabbar till temperatur</li>
           </ul>
-          <p>Prova samma inklistring i riktiga Cosmic innan värdena används i vården. Kryssrutor och Ja/Nej fylls inte av inklistringen.</p>
+          <p>Kryssrutor och Ja/Nej fylls inte av text. De klickas för hand, precis som i Cosmic.</p>
         </div>
       </aside>
     </div>
   </main>
   <footer class="site-foot">newss.se · Värdena sparas inte på servern</footer>
 
-  <script src="js/model.js"></script>
-  <script src="js/cosmic.js"></script>
+  <script src="js/model.js?v=10"></script>
+  <script src="js/cosmic.js?v=10"></script>
 </body>
 </html>
