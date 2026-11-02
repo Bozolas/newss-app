@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NEWS till Cosmic</title>
-  <meta name="description" content="Skriv in NEWS-värden och kopiera dem till Cosmic. Värdena fördelas i rätt rutor.">
+  <meta name="description" content="Skriv in NEWS-värden och fyll i dem i Cosmic med riktiga TAB-tryck.">
   <meta name="theme-color" content="#1b3f5c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
@@ -21,12 +21,12 @@
   </header>
 
   <main>
-    <p class="intro">Skriv in NEWS-värdena. Kopiera dem med en knapp och klistra in i rutan <strong>Andningsfrekvens</strong> i Cosmic. Värdena fördelas då i rätt rutor. Kontrollera alltid innan du sparar.</p>
+    <p class="intro">Skriv in NEWS-värdena och hämta ifyllningen. Filen skriver in värdena i Cosmic och trycker TAB mellan rutorna. Kontrollera alltid innan du sparar.</p>
 
     <ol class="steps">
       <li>Skriv in värdena</li>
-      <li>Kopiera</li>
-      <li>Klistra in i Cosmic</li>
+      <li>Hämta ifyllningen</li>
+      <li>Kör filen mot Cosmic</li>
       <li>Kontrollera och spara</li>
     </ol>
 
@@ -62,7 +62,7 @@
           <button type="button" data-syrgas="nej" aria-pressed="true">Nej, luft</button>
           <button type="button" data-syrgas="ja" aria-pressed="false">Ja, syrgas</button>
         </div>
-        <p class="help">Ja och Nej klistras inte in. Du får en påminnelse om du valt syrgas.</p>
+        <p class="help">Ja och Nej fylls inte i automatiskt. Du får en påminnelse om du valt syrgas.</p>
         <div class="control" id="flow-row" hidden>
           <label class="sr" for="flow">Flödeshastighet</label>
           <input id="flow" inputmode="decimal" maxlength="5" autocomplete="off" spellcheck="false" placeholder="Flöde">
@@ -103,7 +103,7 @@
           <option value="Pain">Pain — reagerar på smärta</option>
           <option value="Unresponsive">Unresponsive — reagerar inte</option>
         </select>
-        <p class="help">Ordet som klistras in är Alert, Confusion, Voice, Pain eller Unresponsive, samma ord som Cosmic visar.</p>
+        <p class="help">Ordet som skrivs in är Alert, Confusion, Voice, Pain eller Unresponsive, samma ord som Cosmic visar.</p>
       </div>
 
       <div class="field">
@@ -128,8 +128,9 @@
       </details>
 
       <div class="copy-bar">
-        <button type="button" class="primary" id="copy" disabled>Kopiera värden</button>
-        <p class="help">Ctrl+Enter kopierar också. Inget sparas på någon server.</p>
+        <button type="button" class="primary" id="fill" disabled>Fyll i Cosmic</button>
+        <button type="button" class="text" id="copy" disabled>Kopiera för testsidan</button>
+        <p class="help">Inget sparas på någon server. Ctrl+Enter hämtar ifyllningen.</p>
       </div>
 
       <div id="status" class="status" hidden aria-live="polite"></div>
