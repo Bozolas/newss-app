@@ -305,7 +305,7 @@ input:focus, select:focus, button:focus-visible {
 .tabs { color: var(--navy); font-variant-numeric: tabular-nums; font-weight: 700; }
 .flow-note { color: var(--muted); }
 
-.copy-bar { margin-top: 18px; }
+.install { margin: 4px 0 12px; }
 .copy-bar .help a { color: var(--navy); font-weight: 700; }
 .copy-bar .text { display: block; margin-top: 10px; }
 .copy-bar .text:disabled { opacity: 0.45; cursor: not-allowed; }
