@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NEWS till Cosmic</title>
-  <meta name="description" content="Skriv in NEWS-värden. Appen skriver in dem i Cosmic och trycker TAB.">
+  <meta name="description" content="Skriv in NEWS-värden och kopiera ett värde i taget till Cosmic.">
   <meta name="theme-color" content="#1b3f5c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
@@ -21,14 +21,12 @@
   </header>
 
   <main>
-    <p class="intro">Skriv in NEWS-värdena och klicka <strong>Fyll i Cosmic</strong>. Appen skriver in värdena och trycker TAB. Första gången kopierar du appen till Anteckningar och sparar den. Ingen programfil laddas ner. Kontrollera alltid innan du sparar.</p>
-    <button type="button" class="primary install" id="install">Kopiera appen</button>
-    <p class="help">Klistra in texten i Anteckningar. Spara som NewsCosmic.vbs, filtyp Alla filer och kodning ANSI.</p>
+    <p class="intro">Skriv in värdena. Klicka i rutan <strong>Andningsfrekvens</strong> i Cosmic. Kopiera ett värde i taget här, klistra in det och tryck TAB så många gånger som sidan säger. Kontrollera alltid innan du sparar.</p>
 
     <ol class="steps">
-      <li>Kopiera appen en gång</li>
       <li>Skriv in värdena</li>
-      <li>Fyll i Cosmic</li>
+      <li>Klicka i Andningsfrekvens</li>
+      <li>Kopiera, klistra in och tryck TAB</li>
       <li>Kontrollera och spara</li>
     </ol>
 
@@ -131,8 +129,8 @@
       </details>
 
       <div class="copy-bar">
-        <button type="button" class="primary" id="fill" disabled>Fyll i Cosmic</button>
-        <p class="help">Ctrl+Enter fyller i Cosmic.</p>
+        <button type="button" class="primary" id="fill" disabled>Kopiera nästa värde</button>
+        <p class="help">Klicka först i Andningsfrekvens i Cosmic. Ctrl+Enter kopierar nästa värde.</p>
         <button type="button" class="text" id="copy" disabled>Kopiera för testsidan</button>
       </div>
 

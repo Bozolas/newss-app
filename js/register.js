@@ -163,6 +163,8 @@
     });
   }
 
+  var stepIndex = 0;
+
   function render() {
     var values = readValues();
     renderScore(values);
@@ -171,6 +173,7 @@
     var ready = M.hasAnyValue(values);
     copyButton.disabled = !ready;
     fillButton.disabled = !ready;
+    stepIndex = 0;
   }
 
   function fallbackCopy(text) {
@@ -302,6 +305,83 @@
     });
   }
 
+  function pasteStops(values) {
+    var found = [];
+    M.STOPS.forEach(function (stop) {
+      if (stop.kind !== "value") return;
+      var text = stop.input === "acvpu" ? (values.acvpu || "") : M.formatStop(stop.id, values[stop.id]);
+      if (!text) return;
+      found.push({ label: stop.label, text: text, index: M.indexOf(stop.id) });
+    });
+    return found;
+  }
+
+  function notesBetween(values, fromIndex, toIndex) {
+    var notes = [];
+    for (var i = fromIndex + 1; i < toIndex; i++) {
+      var stop = M.STOPS[i];
+      if (stop.id === "habituell" && values.habituell) notes.push("Kryssa låg habituell syremättnad när du passerar den.");
+      if (stop.id === "syrgas-ja" && values.syrgas === "ja") notes.push("Välj Ja för syrgas när du passerar den.");
+      if (stop.id === "oregelbunden" && values.oregelbunden) notes.push("Kryssa oregelbunden puls när du passerar den.");
+    }
+    return notes;
+  }
+
+  function tabPhrase(count) {
+    if (count === 1) return "Tryck TAB en gång.";
+    return "Tryck TAB " + count + " gånger.";
+  }
+
+  function showNextStatus(failed, current, tabs, notes, nextLabel) {
+    statusBox.innerHTML = "";
+    statusBox.hidden = false;
+    statusBox.classList.toggle("error", !!failed);
+    var lead = document.createElement("p");
+    lead.className = "lead";
+    lead.textContent = failed ? "Texten nedan är markerad. Tryck Ctrl+C." : current.label + " är kopierad: " + current.text;
+    var how = document.createElement("p");
+    if (tabs > 0) how.textContent = "Klistra in i Cosmic. " + tabPhrase(tabs);
+    else how.textContent = "Klistra in i Cosmic. Alla värden är klara. Kontrollera innan du sparar.";
+    statusBox.appendChild(lead);
+    statusBox.appendChild(how);
+    notes.forEach(function (line) {
+      var p = document.createElement("p");
+      p.textContent = line;
+      statusBox.appendChild(p);
+    });
+    if (nextLabel) {
+      var more = document.createElement("p");
+      more.textContent = "Klicka igen för " + nextLabel + ".";
+      statusBox.appendChild(more);
+    }
+    if (failed) {
+      var area = document.createElement("textarea");
+      area.className = "raw";
+      area.readOnly = true;
+      area.value = current.text;
+      statusBox.appendChild(area);
+      area.focus();
+      area.select();
+    }
+  }
+
+  function nextValue() {
+    var values = readValues();
+    var stops = pasteStops(values);
+    if (!stops.length) return;
+    if (stepIndex >= stops.length) stepIndex = 0;
+    var current = stops[stepIndex];
+    var next = stops[stepIndex + 1];
+    var tabs = next ? next.index - current.index : 0;
+    var notes = next ? notesBetween(values, current.index, next.index) : [];
+    stepIndex += 1;
+    copyText(current.text).then(function () {
+      showNextStatus(false, current, tabs, notes, next ? next.label : "");
+    }).catch(function () {
+      showNextStatus(true, current, tabs, notes, next ? next.label : "");
+    });
+  }
+
   function launchApp() {
     var values = readValues();
     if (!M.hasAnyValue(values)) return;
@@ -429,15 +509,14 @@
   document.getElementById("entry").addEventListener("input", render);
   document.getElementById("entry").addEventListener("change", render);
   copyButton.addEventListener("click", copy);
-  fillButton.addEventListener("click", launchApp);
-  document.getElementById("install").addEventListener("click", copyApp);
+  fillButton.addEventListener("click", nextValue);
   document.getElementById("example").addEventListener("click", fillExample);
   document.getElementById("random").addEventListener("click", fillRandom);
   document.getElementById("clear").addEventListener("click", clearForm);
   document.addEventListener("keydown", function (event) {
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
       event.preventDefault();
-      launchApp();
+      nextValue();
     }
   });
 
@@ -448,7 +527,7 @@
       event.preventDefault();
       var next = fields[order[index + 1]];
       if (next) next.focus();
-      else launchApp();
+      else nextValue();
     });
   });
 
